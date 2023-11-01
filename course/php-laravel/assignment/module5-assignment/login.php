@@ -1,26 +1,31 @@
 <?php
 session_start();
 include('db.php');
-if(isset($_SESSION['username'])) {
+if(isset($user)) {
 	header("Location: dashboard.php");
 }
+
 if(isset($_POST['login_btn'])) {
 	$email = $_POST['email'];
 	$password = $_POST['password'];
 
 	$query = $db->query("SELECT * FROM users WHERE email = '$email'");
 	$row = $query->fetch_assoc();
-	echo print_r($row);
 
-	if($email == $row['email'] && md5($password) == $row['password']) {
+if (empty($row['email'])) {
+    $loginMsg = "User does not exists";
+	} else{
+    if($email == $row['email'] && md5($password) == $row['password']) {
 
-			$loginMsg = "Login Successful";
-			$_SESSION['username'] = $row['username'];
-			echo header("Location: ./dashboard.php");
-	} else {
-			$loginMsg = "Login failed";
-	}
-
+        $loginMsg = "Login Successful";
+        $_SESSION['username'] = $row['username'];
+		$_SESSION['role'] = $row['role'];
+		$_SESSION['uid'] = $row['id'];
+        header("Location: ./dashboard.php");
+    } else {
+        $loginMsg = "Login failed";
+    }
+}
 }
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("db.php");
-if(isset($_SESSION['username'])) {
+if(isset($user)) {
 	header("Location: dashboard.php");
 }
 
@@ -11,11 +11,11 @@ if(isset($_POST['register_btn'])) {
 	$email = $_POST['email'];
 	$passHash = md5($password);
 
-	$role = '3'; // admin: 1, manager: 2, user: 3
+	$defaultRole = 'User';
 
 	$time = date('Y-m-d h:i:s A');
 
-	$register = $db->query("INSERT INTO users (username, password, email, role, time) VALUES ('$username', '$passHash', '$email', '$role', '$time')");
+	$register = $db->query("INSERT INTO users (username, password, email, role, time) VALUES ('$username', '$passHash', '$email', '$defaultRole', '$time')");
 
 	if($register) {
 		$msg = "Account created successfully";

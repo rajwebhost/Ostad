@@ -14,7 +14,19 @@ if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
 
-$query = $db->query("SELECT * FROM users");
-$row = $query->fetch_assoc();
+$all_users = $db->query("SELECT * FROM users");
+$user_row = $all_users->fetch_assoc();
+
+if (isset($_SESSION['username'])) {
+	$user = $_SESSION['username'];
+}
+if (isset($_SESSION['role'])) {
+	$role = $_SESSION['role'];
+}
+if (isset($_SESSION['uid'])) {
+	$uid = $_SESSION['uid'];
+}
+
+$refresh = '<meta http-equiv="refresh" content="1"/>';
 
 ?>
